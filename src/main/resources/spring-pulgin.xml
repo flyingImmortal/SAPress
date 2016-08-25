@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop   
+        http://www.springframework.org/schema/aop/spring-aop-3.0.xsd   
+        http://www.springframework.org/schema/beans   
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd   
+        http://www.springframework.org/schema/context   
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<bean id="activeRecordPlugin" class="cn.sxfei.app.plugins.jfinal.activerecord.ActiveRecordPlugin">
+		<constructor-arg  ref="dataSource"/>
+		<property name="showSql" value="true" />
+		<!-- 扫描该包下的所有PO类 -->
+		<property name="basePackage" value="cn.sxfei.app.modules"/>
+	</bean>
+	<bean id="sqlPlugin" class="cn.sxfei.app.plugins.sqlplugin.SqlPlugin">
+	</bean>
+ 	<bean class="cn.sxfei.app.core.spring.PluginStart" init-method="startPlugins" >
+		<property name="pluginList">
+            <list>
+            	<ref bean="activeRecordPlugin"></ref>
+            	<ref bean="sqlPlugin"></ref>
+            </list>
+        </property>
+	</bean>
+
+</beans>  

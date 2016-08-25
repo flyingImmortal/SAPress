@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sxfei.app.modules.sapress.services.base.dao.IOptionsDAO" >
+  <resultMap id="optionsResult" type="cn.sxfei.app.modules.sapress.interfaces.base.entity.Options" >
+    <id column="option_id" property="optionId" jdbcType="BIGINT" />
+    <result column="option_name" property="optionName" jdbcType="VARCHAR" />
+    <result column="autoload" property="autoload" jdbcType="VARCHAR" />
+  	<result column="option_value" property="optionValue" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Options_Column_List" >
+    option_id, option_name, autoload,option_value
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="optionsResult" parameterType="cn.sxfei.app.core.base.dto.QueryDTO">
+    select 
+    <include refid="Options_Column_List" />
+    from ${tablePrefix}options
+    where option_id = #{id,jdbcType=BIGINT}
+  </select>
+    <select id="selectAll" resultMap="optionsResult" parameterType="cn.sxfei.app.core.base.dto.QueryDTO">
+    select 
+    <include refid="Options_Column_List" />
+    from ${tablePrefix}options 
+  </select> 
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sxfei.app.modules.sapress.services.base.dao.ICommentMetaDAO" >
+  <resultMap id="CommentMetaResult" type="cn.sxfei.app.modules.sapress.interfaces.base.entity.CommentMeta" >
+    <id column="meta_id" property="metaId" jdbcType="BIGINT" />
+    <result column="comment_id" property="commentId" jdbcType="BIGINT" />
+    <result column="meta_key" property="metaKey" jdbcType="VARCHAR" />
+    <result column="meta_value" property="metaValue" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="CommentMeta_Column_List" >
+    meta_id, comment_id, meta_key, meta_value
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="CommentMetaResult" parameterType="cn.sxfei.app.core.base.dto.QueryDTO" >
+    select 
+    <include refid="CommentMeta_Column_List" />
+    from ${tablePrefix}commentmeta
+    where meta_id = #{metaId,jdbcType=BIGINT}
+  </select>
+  <select id="selectByIds" resultMap="CommentMetaResult" parameterType="cn.sxfei.app.core.base.dto.QueryDTO" >
+    select 
+    <include refid="CommentMeta_Column_List" />
+    from ${tablePrefix}commentmeta
+    where comment_ID in 
+     <foreach collection="idList" item="item" index="index" separator="," open="(" close=")">
+        #{item}
+     </foreach>
+  </select>
+</mapper>

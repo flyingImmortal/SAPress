@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sxfei.app.modules.sapress.services.base.dao.ICommentsDAO">
+	<resultMap id="CommentsResult"
+		type="cn.sxfei.app.modules.sapress.interfaces.base.entity.Comments">
+		<id column="comment_ID" property="commentId" jdbcType="BIGINT" />
+		<result column="comment_post_ID" property="commentPostId"
+			jdbcType="BIGINT" />
+		<result column="comment_author" property="commentAuthor"
+			jdbcType="VARCHAR" />
+		<result column="comment_author_email" property="commentAuthorEmail"
+			jdbcType="VARCHAR" />
+		<result column="comment_author_url" property="commentAuthorUrl"
+			jdbcType="VARCHAR" />
+		<result column="comment_author_IP" property="commentAuthorIp"
+			jdbcType="VARCHAR" />
+		<result column="comment_date" property="commentDate" jdbcType="TIMESTAMP" />
+		<result column="comment_date_gmt" property="commentDateGmt"
+			jdbcType="TIMESTAMP" />
+		<result column="comment_karma" property="commentKarma"
+			jdbcType="INTEGER" />
+		<result column="comment_approved" property="commentApproved"
+			jdbcType="VARCHAR" />
+		<result column="comment_agent" property="commentAgent"
+			jdbcType="VARCHAR" />
+		<result column="comment_type" property="commentType" jdbcType="VARCHAR" />
+		<result column="comment_parent" property="commentParent"
+			jdbcType="BIGINT" />
+		<result column="user_id" property="userId" jdbcType="BIGINT" />
+		<result column="comment_content" property="commentContent"
+			jdbcType="LONGVARCHAR" />
+	</resultMap>
+	<sql id="Comments_Column_List">
+		comment_ID, comment_post_ID, comment_author,
+		comment_author_email,
+		comment_author_url,
+		comment_author_IP,
+		comment_date, comment_date_gmt, comment_karma, comment_approved,
+		comment_agent, comment_type, comment_parent, user_id,comment_content
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="CommentsResult"
+		parameterType="cn.sxfei.app.core.base.dto.QueryDTO">
+		select
+		<include refid="Comments_Column_List" />
+		from ${tablePrefix}comments
+		where comment_ID = #{id,jdbcType=BIGINT}
+	</select>
+	<select id="selectByIds" resultMap="CommentsResult"
+		parameterType="cn.sxfei.app.core.base.dto.QueryDTO">
+		select
+		<include refid="Comments_Column_List" />
+		from ${tablePrefix}comments
+		where comment_ID in
+		<foreach collection="idList" item="item" index="index"
+			separator="," open="(" close=")">
+			#{item}
+		</foreach>
+	</select>
+
+	<select id="selectLastComments" resultType="Long"
+		parameterType="cn.sxfei.app.core.base.dto.QueryDTO">
+		SELECT t.comment_ID
+		FROM ${tablePrefix}comments t JOIN
+		${tablePrefix}posts
+		tt
+		ON tt.ID =
+		t.comment_post_ID
+		WHERE
+		t.comment_approved = '1'
+		AND tt.post_status IN
+		('publish')
+		ORDER BY
+		t.comment_date_gmt DESC LIMIT 5
+
+	</select>
+	<select id="selectAllLastComments" resultType="Long"
+		parameterType="cn.sxfei.app.core.base.dto.QueryDTO">
+		SELECT
+		t.comment_ID FROM ${tablePrefix}comments t JOIN
+		${tablePrefix}posts
+		tt
+		ON tt.ID = t.comment_post_ID
+		WHERE
+		t.comment_approved = '1'
+		AND
+		tt.post_status IN ('publish')
+		ORDER BY
+		t.comment_date_gmt DESC LIMIT 5
+
+	</select>
+	<select id="selectPostComments" resultType="Long"
+		parameterType="cn.sxfei.app.core.base.dto.QueryDTO">
+
+		SELECT SQL_CALC_FOUND_ROWS
+		comment_ID
+		FROM
+		${tablePrefix}comments
+		WHERE
+		(
+		(comment_approved = '1')
+		OR (
+		user_id = 1
+		AND
+		comment_approved = '0'
+		)
+		)
+		AND comment_post_ID = #{id,jdbcType=BIGINT}
+		AND comment_parent = 0
+		ORDER BY
+		comment_date_gmt ASC,
+		comment_ID ASC
+	</select>
+
+	<select id="selectForPage" resultType="Long"
+		parameterType="cn.sxfei.app.modules.sapress.interfaces.base.dto.CommentQueryDTO">
+		SELECT SQL_CALC_FOUND_ROWS comment_ID
+		FROM ${tablePrefix}comments WHERE 1=1 
+		<if test="statusList != null and statusList.size() > 0">
+			and comment_approved in
+			<foreach collection="statusList" item="item" index="index"
+				separator="," open="(" close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="postId != null">
+			AND comment_post_ID = #{postId,jdbcType=BIGINT}
+		</if>
+		<if test="sortkey != null">
+			ORDER BY ${sortkey}
+		</if>
+		<bind name="offset" value="pageSize * pageNo" />
+		LIMIT #{offset, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER}
+	</select>
+</mapper>

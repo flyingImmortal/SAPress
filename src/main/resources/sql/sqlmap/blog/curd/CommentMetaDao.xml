@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sxfei.app.modules.sapress.services.base.dao.ICommentMetaDAO" >
+  <resultMap id="BaseResultMap" type="cn.sxfei.app.modules.sapress.interfaces.base.entity.CommentMeta" >
+    <id column="meta_id" property="metaId" jdbcType="BIGINT" />
+    <result column="comment_id" property="commentId" jdbcType="BIGINT" />
+    <result column="meta_key" property="metaKey" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="cn.sxfei.app.modules.sapress.interfaces.base.entity.CommentMeta" extends="BaseResultMap" >
+    <result column="meta_value" property="metaValue" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    meta_id, comment_id, meta_key
+  </sql>
+  <sql id="Blob_Column_List" >
+    meta_value
+  </sql>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from jbpress_commentmeta
+    where meta_id = #{metaId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.sxfei.app.modules.sapress.interfaces.base.entity.CommentMeta" >
+    insert into jbpress_commentmeta (meta_id, comment_id, meta_key, 
+      meta_value)
+    values (#{metaId,jdbcType=BIGINT}, #{commentId,jdbcType=BIGINT}, #{metaKey,jdbcType=VARCHAR}, 
+      #{metaValue,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.sxfei.app.modules.sapress.interfaces.base.entity.CommentMeta" >
+    insert into jbpress_commentmeta
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="metaId != null" >
+        meta_id,
+      </if>
+      <if test="commentId != null" >
+        comment_id,
+      </if>
+      <if test="metaKey != null" >
+        meta_key,
+      </if>
+      <if test="metaValue != null" >
+        meta_value,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="metaId != null" >
+        #{metaId,jdbcType=BIGINT},
+      </if>
+      <if test="commentId != null" >
+        #{commentId,jdbcType=BIGINT},
+      </if>
+      <if test="metaKey != null" >
+        #{metaKey,jdbcType=VARCHAR},
+      </if>
+      <if test="metaValue != null" >
+        #{metaValue,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.sxfei.app.modules.sapress.interfaces.base.entity.CommentMeta" >
+    update jbpress_commentmeta
+    <set >
+      <if test="commentId != null" >
+        comment_id = #{commentId,jdbcType=BIGINT},
+      </if>
+      <if test="metaKey != null" >
+        meta_key = #{metaKey,jdbcType=VARCHAR},
+      </if>
+      <if test="metaValue != null" >
+        meta_value = #{metaValue,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where meta_id = #{metaId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.sxfei.app.modules.sapress.interfaces.base.entity.CommentMeta" >
+    update jbpress_commentmeta
+    set comment_id = #{commentId,jdbcType=BIGINT},
+      meta_key = #{metaKey,jdbcType=VARCHAR},
+      meta_value = #{metaValue,jdbcType=LONGVARCHAR}
+    where meta_id = #{metaId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.sxfei.app.modules.sapress.interfaces.base.entity.CommentMeta" >
+    update jbpress_commentmeta
+    set comment_id = #{commentId,jdbcType=BIGINT},
+      meta_key = #{metaKey,jdbcType=VARCHAR}
+    where meta_id = #{metaId,jdbcType=BIGINT}
+  </update>
+</mapper>

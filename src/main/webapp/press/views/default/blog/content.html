@@ -1,0 +1,72 @@
+
+        <section id="mainstay" class="col-md-8" ng-controller="ContentController">
+            <div id="ie-warning" class="alert alert-danger fade in">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <i class="fa fa-warning"></i> 请注意，网站并不支持低于IE8的浏览器，为了获得最佳效果，请下载最新的浏览器，推荐下载 <a href="http://www.google.cn/intl/zh-CN/chrome/" target="_blank"><i class="fa fa-compass"></i> Chrome</a>
+            </div>
+            <div class="well fade in">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                专业收藏android应用开发技术文章,所有文字图片资料均来源于网络，如涉嫌侵权，请联系本站QQ2244185653,欢迎加入QQ群<strong>113620119</strong>。<br/> <i class="fa fa-smile-o"></i>
+                <strong><a href="javascript:void(0)">爱心提醒，如果发现文章进入的不对请在右边搜索，一定可以找到!</a> </strong><i class="fa fa-smile-o"></i>
+            </div>
+
+            <div class="article well clearfix" ng-repeat="vo in contentList track by $index">
+                <div class="data-article hidden-xs">
+                    <span class="month">{{vo.month}}月</span>
+                    <span class="day">{{vo.day}}</span>
+                </div>
+                <!-- PC端设备文章属性 -->
+                <section class="visible-md visible-lg">
+                    <div class="title-article">
+                        <h1><a ng-click="blogOnClick(vo.id)" href="javascript:;">
+                            {{vo.title}}</a></h1>
+                    </div>
+                    <div class="tag-article container">
+                        <span ng-repeat="cat in vo.category track by $index">
+                            <span class="label label-zan"><i class="fa fa-tags"></i>
+                                <a href="http://blog.goggb.com/?cat={{cat.termId}}" title="查看{{cat.name}}中的全部文章" rel="category">{{cat.name}}</a>
+                            </span>
+                        </span>
+                        <span class="label label-zan"><i class="fa fa-user"></i>
+                            <a href="http://blog.goggb.com/?author=1" title="由{{vo.author}}发布" rel="author">{{vo.author}}</a></span>
+                        <span class="label label-zan"><i class="fa fa-eye"></i>
+                            <span class="ds-thread-count" data-thread-key="5122" data-replace="1">{{vo.comment}}</span></span>
+                    </div>
+                    <div class="content-article">
+                        <figure class="thumbnail"><a ng-click="blogOnClick(vo.id)" href="javascript:;"></a></figure>
+                        <div class="alert alert-zan" ng-bind-html="vo.contentArticle">
+
+                        </div>
+                    </div>
+                    <a class="btn btn-danger pull-right read-more" ng-click="blogOnClick(vo.id)" href="javascript:;"
+                       title="详细阅读 {{vo.title}}">
+                        阅读全文 <span class="badge">{{vo.viewTotle}} views</span></a>
+                </section>
+                <!-- PC端设备文章属性 -->
+                <!-- 移动端设备文章属性 -->
+                <section class="visible-xs  visible-sm">
+                    <div class="title-article">
+                        <h4><a ng-click="blogOnClick(vo.id)" href="javascript:;">{{vo.title}}</a></h4>
+                    </div>
+                    <p>
+                        <i class="fa fa-calendar"></i> {{vo.monthDay}}						<i class="fa fa-eye"></i>
+                        <span class="ds-thread-count" data-thread-key="5122" data-replace="1">{{vo.comment}}</span>						</p>
+                    <div class="content-article">
+                        <figure class="thumbnail"><a ng-click="blogOnClick(vo.id)" href="javascript:;"></a></figure>
+                        <div class="alert alert-zan"  ng-bind-html="vo.contentArticle">
+
+                        </div>
+                    </div>
+                    <a class="btn btn-danger pull-right read-more btn-block" ng-click="blogOnClick(vo.id)" href="javascript:;"
+                       title="详细阅读 {{vo.title}}">
+                        阅读全文 <span class="badge">{{vo.viewTotle}} views </span></a>
+                </section>
+                <!-- 移动端设备文章属性 -->
+            </div>
+            <div class="  alert-danger fade in">
+                <a style="color: #ffffff;" id='load-more1' class='btn btn-zan btn-block' load-data='努力加载中...' href='' ng-click="getMore()">
+                    <i></i> <attr>加载更多</attr></a>
+            </div>
+        </section>
+
+

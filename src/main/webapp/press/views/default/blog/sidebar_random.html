@@ -1,0 +1,16 @@
+<div class="panel panel-zan random" ng-controller="RandomArticlesController">
+    <div class="panel-heading">
+        <i class="fa fa-random"></i> 随机文章
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item" ng-repeat="item in articles">
+            <a href="" rel="bookmark" title="{{item.title}}"  target="_blank" ng-click="blogOnClick(item.id)">
+                <!-- 大屏PC端 -->
+                <div class="visible-lg">{{item.title | cut:true:20:'...'}}</div>
+                <!-- 小屏PC端 -->
+                <div class="visible-md">{{item.title | cut:true:15:'...'}}</div>
+            </a>
+            <span class="badge">{{item.viewTotle}}</span>
+        </li>
+    </ul>
+</div>

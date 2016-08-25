@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sxfei.app.modules.sapress.services.base.dao.ITermTaxonomyDAO" >
+  <resultMap id="BaseResultMap" type="cn.sxfei.app.modules.sapress.interfaces.base.entity.TermTaxonomy" >
+    <id column="term_taxonomy_id" property="termTaxonomyId" jdbcType="BIGINT" />
+    <result column="term_id" property="termId" jdbcType="BIGINT" />
+    <result column="taxonomy" property="taxonomy" jdbcType="VARCHAR" />
+    <result column="parent" property="parent" jdbcType="BIGINT" />
+    <result column="count" property="count" jdbcType="BIGINT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="cn.sxfei.app.modules.sapress.interfaces.base.entity.TermTaxonomy" extends="BaseResultMap" >
+    <result column="description" property="description" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    term_taxonomy_id, term_id, taxonomy, parent, count
+  </sql>
+  <sql id="Blob_Column_List" >
+    description
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from jbpress_term_taxonomy
+    where term_taxonomy_id = #{termTaxonomyId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from jbpress_term_taxonomy
+    where term_taxonomy_id = #{termTaxonomyId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.sxfei.app.modules.sapress.interfaces.base.entity.TermTaxonomy" >
+    insert into jbpress_term_taxonomy (term_taxonomy_id, term_id, taxonomy, 
+      parent, count, description
+      )
+    values (#{termTaxonomyId,jdbcType=BIGINT}, #{termId,jdbcType=BIGINT}, #{taxonomy,jdbcType=VARCHAR}, 
+      #{parent,jdbcType=BIGINT}, #{count,jdbcType=BIGINT}, #{description,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.sxfei.app.modules.sapress.interfaces.base.entity.TermTaxonomy" >
+    insert into jbpress_term_taxonomy
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="termTaxonomyId != null" >
+        term_taxonomy_id,
+      </if>
+      <if test="termId != null" >
+        term_id,
+      </if>
+      <if test="taxonomy != null" >
+        taxonomy,
+      </if>
+      <if test="parent != null" >
+        parent,
+      </if>
+      <if test="count != null" >
+        count,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="termTaxonomyId != null" >
+        #{termTaxonomyId,jdbcType=BIGINT},
+      </if>
+      <if test="termId != null" >
+        #{termId,jdbcType=BIGINT},
+      </if>
+      <if test="taxonomy != null" >
+        #{taxonomy,jdbcType=VARCHAR},
+      </if>
+      <if test="parent != null" >
+        #{parent,jdbcType=BIGINT},
+      </if>
+      <if test="count != null" >
+        #{count,jdbcType=BIGINT},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.sxfei.app.modules.sapress.interfaces.base.entity.TermTaxonomy" >
+    update jbpress_term_taxonomy
+    <set >
+      <if test="termId != null" >
+        term_id = #{termId,jdbcType=BIGINT},
+      </if>
+      <if test="taxonomy != null" >
+        taxonomy = #{taxonomy,jdbcType=VARCHAR},
+      </if>
+      <if test="parent != null" >
+        parent = #{parent,jdbcType=BIGINT},
+      </if>
+      <if test="count != null" >
+        count = #{count,jdbcType=BIGINT},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where term_taxonomy_id = #{termTaxonomyId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.sxfei.app.modules.sapress.interfaces.base.entity.TermTaxonomy" >
+    update jbpress_term_taxonomy
+    set term_id = #{termId,jdbcType=BIGINT},
+      taxonomy = #{taxonomy,jdbcType=VARCHAR},
+      parent = #{parent,jdbcType=BIGINT},
+      count = #{count,jdbcType=BIGINT},
+      description = #{description,jdbcType=LONGVARCHAR}
+    where term_taxonomy_id = #{termTaxonomyId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.sxfei.app.modules.sapress.interfaces.base.entity.TermTaxonomy" >
+    update jbpress_term_taxonomy
+    set term_id = #{termId,jdbcType=BIGINT},
+      taxonomy = #{taxonomy,jdbcType=VARCHAR},
+      parent = #{parent,jdbcType=BIGINT},
+      count = #{count,jdbcType=BIGINT}
+    where term_taxonomy_id = #{termTaxonomyId,jdbcType=BIGINT}
+  </update>
+</mapper>

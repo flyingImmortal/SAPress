@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sxfei.app.modules.sapress.services.base.dao.IOptionsDAO" >
+  <resultMap id="BaseResultMap" type="cn.sxfei.app.modules.sapress.interfaces.base.entity.Options" >
+    <id column="option_id" property="optionId" jdbcType="BIGINT" />
+    <result column="option_name" property="optionName" jdbcType="VARCHAR" />
+    <result column="autoload" property="autoload" jdbcType="VARCHAR" />
+    <result column="option_value" property="optionValue" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    option_id, option_name, autoload,
+    option_value
+  </sql>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from wp_options
+    where option_id = #{optionId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.sxfei.app.modules.sapress.interfaces.base.entity.Options" >
+    insert into wp_options (option_id, option_name, autoload, 
+      option_value)
+    values (#{optionId,jdbcType=BIGINT}, #{optionName,jdbcType=VARCHAR}, #{autoload,jdbcType=VARCHAR}, 
+      #{optionValue,jdbcType=LONGVARCHAR})
+  </insert>
+ 
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.sxfei.app.modules.sapress.interfaces.base.entity.Options" >
+    update wp_options
+    set option_name = #{optionName,jdbcType=VARCHAR},
+      autoload = #{autoload,jdbcType=VARCHAR},
+      option_value = #{optionValue,jdbcType=LONGVARCHAR}
+    where option_id = #{optionId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.sxfei.app.modules.sapress.interfaces.base.entity.Options" >
+    update wp_options
+    set option_name = #{optionName,jdbcType=VARCHAR},
+      autoload = #{autoload,jdbcType=VARCHAR}
+    where option_id = #{optionId,jdbcType=BIGINT}
+  </update>
+</mapper>

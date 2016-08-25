@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sxfei.app.modules.sapress.services.base.dao.IPostsDAO" >
+  <resultMap id="PostsResult" type="cn.sxfei.app.modules.sapress.interfaces.base.entity.Posts" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="post_author" property="postAuthor" jdbcType="BIGINT" />
+    <result column="post_date" property="postDate" jdbcType="TIMESTAMP" />
+    <result column="post_date_gmt" property="postDateGmt" jdbcType="TIMESTAMP" />
+    <result column="post_status" property="postStatus" jdbcType="VARCHAR" />
+    <result column="comment_status" property="commentStatus" jdbcType="VARCHAR" />
+    <result column="ping_status" property="pingStatus" jdbcType="VARCHAR" />
+    <result column="post_password" property="postPassword" jdbcType="VARCHAR" />
+    <result column="post_name" property="postName" jdbcType="VARCHAR" />
+    <result column="post_modified" property="postModified" jdbcType="TIMESTAMP" />
+    <result column="post_modified_gmt" property="postModifiedGmt" jdbcType="TIMESTAMP" />
+    <result column="post_parent" property="postParent" jdbcType="BIGINT" />
+    <result column="guid" property="guid" jdbcType="VARCHAR" />
+    <result column="menu_order" property="menuOrder" jdbcType="INTEGER" />
+    <result column="post_type" property="postType" jdbcType="VARCHAR" />
+    <result column="post_mime_type" property="postMimeType" jdbcType="VARCHAR" />
+    <result column="comment_count" property="commentCount" jdbcType="BIGINT" />
+    <result column="post_content" property="postContent" jdbcType="LONGVARCHAR" />
+    <result column="post_title" property="postTitle" jdbcType="LONGVARCHAR" />
+    <result column="post_excerpt" property="postExcerpt" jdbcType="LONGVARCHAR" />
+    <result column="to_ping" property="toPing" jdbcType="LONGVARCHAR" />
+    <result column="pinged" property="pinged" jdbcType="LONGVARCHAR" />
+    <result column="post_content_filtered" property="postContentFiltered" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Posts_Column_List" >
+    ID, post_author, post_date, post_date_gmt, post_status, comment_status, ping_status, 
+    post_password, post_name, post_modified, post_modified_gmt, post_parent, guid, menu_order, 
+    post_type, post_mime_type, comment_count,
+    post_content, post_title, post_excerpt, to_ping, pinged, post_content_filtered
+  </sql>
+  <select id="selectByPrimaryKey"  resultMap="PostsResult" parameterType="cn.sxfei.app.core.base.dto.QueryDTO" >
+    select 
+    <include refid="Posts_Column_List" />
+    from ${tablePrefix}posts
+    where ID = #{id,jdbcType=BIGINT}
+    
+  </select>
+  <select id="selectByIds" resultMap="PostsResult" parameterType="cn.sxfei.app.core.base.dto.QueryDTO" >
+    select 
+    <include refid="Posts_Column_List" />
+    from ${tablePrefix}posts
+    where ID in 
+     <foreach collection="idList" item="item" index="index" separator="," open="(" close=")">
+        #{item}
+     </foreach>
+  </select>
+  <select id="selectByPage" resultType="Long" parameterType="cn.sxfei.app.modules.sapress.interfaces.base.dto.PostQueryDTO">
+        SELECT SQL_CALC_FOUND_ROWS posts.ID
+		FROM ${tablePrefix}posts posts
+        where post_type = #{postType,jdbcType=VARCHAR}
+       
+        <if test="statusList != null and statusList.size() > 0">
+            and post_status in 
+             <foreach collection="statusList" item="item" index="index" separator="," open="(" close=")">
+		        #{item, jdbcType=VARCHAR}
+		     </foreach>
+        </if>
+        <if test="keyword != null and keyword != ''">
+            <![CDATA[
+            AND (((post_title LIKE concat('%',#{keyword, jdbcType=VARCHAR},'%')) 
+            OR (post_excerpt LIKE concat('%',#{keyword, jdbcType=VARCHAR},'%'))
+             OR (post_content LIKE concat('%',#{keyword, jdbcType=VARCHAR},'%'))))
+            ]]>
+        </if>
+        <if test="year != null and year != ''">
+            AND YEAR(post_date)=#{year, jdbcType=VARCHAR}
+            AND MONTH(post_date)=#{month, jdbcType=VARCHAR}
+        </if>
+        order by post_modified desc 
+        <bind name="offset" value="pageSize * pageNo" />
+        LIMIT #{offset, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER}
+    </select>
+    
+  <select id="selectLastPosts" resultType="Long" parameterType="cn.sxfei.app.core.base.dto.QueryDTO" >
+		  SELECT  posts.ID
+		FROM ${tablePrefix}posts posts
+		WHERE 1 =1
+		AND posts.post_type =  'post'
+		AND posts.post_status =  'publish'
+		ORDER BY posts.post_date DESC 
+		<bind name="offset" value="pageSize * pageNo" />
+		LIMIT #{offset, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER}
+
+  </select>  
+  <select id="selectHotPosts" resultType="Long" parameterType="cn.sxfei.app.core.base.dto.QueryDTO" >
+		  SELECT  posts.ID
+		FROM ${tablePrefix}posts posts
+		WHERE 1 =1
+		AND posts.post_type =  'post'
+		AND posts.post_status =  'publish'
+		ORDER BY posts.post_date DESC 
+		LIMIT 0 , 5
+  </select> 
+  <select id="selectRandomPosts" resultType="Long" parameterType="cn.sxfei.app.core.base.dto.QueryDTO" >
+		 SELECT  t1.ID
+		FROM ${tablePrefix}posts AS t1 JOIN (SELECT ROUND(RAND() * 
+		((SELECT MAX(id) FROM ${tablePrefix}posts)-(SELECT MIN(id) 
+		FROM ${tablePrefix}posts))+
+		(SELECT MIN(id) FROM ${tablePrefix}posts)) AS id) AS t2
+		WHERE t1.id >= t2.id
+		ORDER BY t1.id LIMIT 1;
+  </select>
+  
+    <select id="selectPostDate" resultType="Map" >
+  SELECT YEAR(post_date) AS `year`, 
+  MONTH(post_date) AS `month`, count(ID) as posts 
+  FROM jbpress_posts WHERE post_type = 'post' 
+  AND post_status = 'publish' 
+  GROUP BY YEAR(post_date), MONTH(post_date) 
+  ORDER BY post_date DESC
+  </select>
+<select id="selectNextPost" resultType="Long" parameterType="cn.sxfei.app.core.base.dto.QueryDTO" >
+		  SELECT  posts.ID
+		FROM ${tablePrefix}posts posts
+		WHERE <![CDATA[posts.ID> #{id,jdbcType=BIGINT}]]>
+		ORDER BY posts.id
+		LIMIT 1
+  </select> 
+  <select id="selectPrevPost" resultType="Long" parameterType="cn.sxfei.app.core.base.dto.QueryDTO" >
+		  SELECT  posts.ID
+		FROM ${tablePrefix}posts posts
+		WHERE <![CDATA[posts.ID< #{id,jdbcType=BIGINT}]]>
+		ORDER BY posts.id
+		LIMIT 1
+  </select> 
+</mapper>

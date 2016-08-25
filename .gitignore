@@ -1,0 +1,12 @@
+*.class
+*.project
+*.classpath
+/.idea
+*/.settings
+*/target
+/backup
+/.settings
+*.log
+WebRoot/WEB-INF/classes
+/bin
+/target

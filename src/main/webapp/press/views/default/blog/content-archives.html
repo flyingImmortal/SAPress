@@ -1,0 +1,152 @@
+<div class="col-md-8" ng-controller="ContentArchivesController">
+    <article class="article container well">
+        <!-- 面包屑 -->
+        <div class="breadcrumb">
+
+            <i class="fa fa-home"></i> <!-- Breadcrumb NavXT 5.0.1 -->
+            <a title="Go to 移动开发参考书." href="http://blog.goggb.com" class="home">移动开发参考书</a>
+              <span ng-repeat="cat in vo.category track by $index">
+                &gt; <a
+                    title="Go to the {{cat.name}} category archives." href="http://blog.goggb.com/?cat={{cat.termId}}" class="taxonomy category">{{cat.name}}</a>
+                  </span>
+                &gt; {{vo.title}}
+
+        </div>
+        <!-- 面包屑 -->
+        <!-- 大型设备文章属性 -->
+        <div class="hidden-xs">
+            <div class="title-article">
+                <h1><a  ng-click="blogPrevOnClick(vo.id)" href="javascript:;">{{vo.title}}</a></h1>
+            </div>
+            <div class="tag-article container">
+
+
+                <span class="label label-zan"><i class="fa fa-tags"></i> {{vo.monthDay}}</span>
+                 <span ng-repeat="cat in vo.category track by $index">
+                    <span class="label label-zan"><i class="fa fa-tags"></i> <a href="http://blog.goggb.com/?cat={{cat.termId}}"
+                                                                            title="查看{{cat.name}}中的全部文章"
+                                                                            rel="category">{{cat.name}}</a></span>
+                     </span>
+                <span class="label label-zan"><i class="fa fa-user"></i> <a href="http://blog.goggb.com/?author=1"
+                                                                            title="由清风发布" rel="author">{{vo.author}}</a></span>
+                <span class="label label-zan"><i class="fa fa-eye"></i> {{vo.viewTotle}} views</span>
+            </div>
+        </div>
+        <!-- 大型设备文章属性 -->
+        <!-- 小型设备文章属性 -->
+        <div class="visible-xs">
+            <div class="title-article">
+                <h4><a  ng-click="blogPrevOnClick(vo.id)" href="javascript:;">{{vo.title}}</a></h4>
+            </div>
+            <p>
+                <i class="fa fa-calendar"></i> {{vo.monthDay}} <i class="fa fa-eye"></i> {{vo.viewTotle}} views </p>
+        </div>
+        <!-- 小型设备文章属性 -->
+        <div class="centent-article">
+            <figure class="thumbnail hidden-xs"></figure>
+            <p>
+            </p>
+
+            <p  ng-bind-html="vo.contentArticle"> </p>
+
+            <p></p>
+            <!-- 分页 -->
+            <div class="zan-page bs-example">
+                <ul class="pager">
+                    <li class="previous"><a ng-click="blogPrevOnClick(vo.id)" href="javascript:;" rel="prev">上一篇</a></li>
+                    <li class="next"><a ng-click="blogNextOnClick(vo.id)" href="javascript:;" rel="next">下一篇</a></li>
+                </ul>
+            </div>
+            <!-- 分页 -->
+            <!-- 文章版权信息 -->
+            <div class="copyright alert alert-success">
+                <p>版权属于：原作者</p>
+
+                <p>原文地址：<a  ng-click="blogNextOnClick(vo.id)" href="javascript:;">{{vo.originalUrl}}</a></p>
+
+                <p>转载时必须以链接形式注明原始出处及本声明。</p>
+                <p><img src="http://gmph.u.qiniudn.com/pay34k.jpg" alt="打赏作者" width="600" height="400" class="alignnone size-full wp-image-8388"></p>
+            </div>
+            <!-- 文章版权信息 -->
+
+        </div>
+    </article>
+    <!-- 相关文章 -->
+    <div class="bs-example visible-md visible-lg" id="post-related">
+        <div class="row">
+            <div class="alert alert-danger related-title text-center"><i class="fa fa-heart"></i> 您可能也喜欢:</div>
+            <div ng-repeat="vo in contentList track by $index">
+            <div class="col-md-4">
+                <div class="thumbnail">
+                    <div class="caption clearfix">
+                        <p class="post-related-title" style="font-size: 12px;"><a ng-click="blogOnClick(vo.id)" href="javascript:;" rel="bookmark" title="{{vo.title}}">{{vo.title}}</a></p>
+                        <p class="post-related-content"  style="font-size: 12px;" ng-bind-html="vo.contentArticle">...</p>
+                        <p><a class="btn btn-danger pull-right read-more" ng-click="blogOnClick(vo.id)" href="javascript:;" title="详细阅读 {{vo.title}}">阅读全文</a></p>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    <!-- 相关文章结束 -->
+    <div class="ds-thread" data-thread-key="{{vo.id}}" data-author-key="1" data-title="{{vo.title}}"
+         data-url="{{vo.originalUrl}}" id="ds-thread">
+        <div id="ds-reset">
+            <div class="ds-comments-info">
+                <div class="ds-sort"><a class="ds-order-desc">最新</a><a class="ds-order-asc ds-current">最早</a><a
+                        class="ds-order-hot">最热</a></div>
+                <ul class="ds-comments-tabs">
+                    <li class="ds-tab"><a class="ds-comments-tab-duoshuo ds-current" href="javascript:void(0);">{{vo.comment}}条评论</a>
+                    </li>
+                </ul>
+            </div>
+
+            <ul class="ds-comments">
+                <li class="ds-post ds-post-placeholder" ng-show="vo.comment=='0'">还没有评论，沙发等你来抢</li>
+
+                <li class="ds-post" data-post-id="1195263697392500767"  ng-repeat="commentVo in commentList track by $index">
+                <div class="ds-post-self" data-post-id="1195263697392500767" data-thread-id="1195263697392502206" data-root-id="0"
+                     data-source="duoshuo"><div class="ds-avatar"><img src="http://static.duoshuo.com/images/noavatar_default.png"
+                                                                       alt="{{commentVo.commentContent}}"></div><div class="ds-comment-body">
+                    <div class="ds-comment-header"><span class="ds-user-name" data-qqt-account="">{{commentVo.commentContent}}
+                    </span></div><p>{{commentVo.commentContent}}</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="{{commentVo.commentDate}}" title="{{commentVo.commentDate}}">{{commentVo.commentDateStr}}</span>
+                    <a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);">
+                        <span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a>
+                    <a class="ds-post-report" href="javascript:void(0);">
+                <span class="ds-icon ds-icon-report"></span>举报</a></div></div></div>
+                </li>
+
+            </ul>
+
+
+            <!--分页-->
+            <div class="ds-paginator" style="display: none;">
+                <div class="ds-border"></div>
+                <a data-page="1" href="javascript:void(0);" class="ds-current">1</a></div>
+            <a name="respond"></a>
+
+            <div class="ds-replybox"><a class="ds-avatar" href="javascript:void(0);" onclick="return false"><img
+                    src="http://static.duoshuo.com/images/noavatar_default.png" alt=""></a>
+
+                <form method="post">
+                    <input type="hidden" name="thread_id" value="6264835899515732737">
+                    <input type="hidden" name="parent_id" value="" ng-model="comments.time">
+                    <input type="hidden" name="nonce" value="57121c7224935" ng-model="comments.parent_id">
+                    <input type="hidden" name="postId" value="{{vo.id}}" ng-model="comments.postId">
+
+                    <div class="ds-textarea-wrapper ds-rounded-top">
+                        <textarea name="message" title="Ctrl+Enter快捷提交"
+                                                                              placeholder="说点什么吧…" ng-model="comments.text"></textarea>
+                        <pre class="ds-hidden-text"></pre>
+                    </div>
+                    <div class="ds-post-toolbar">
+                        <div class="ds-post-options ds-gradient-bg"><span class="ds-sync"></span></div>
+                        <button class="ds-post-button" type="button" ng-click="saveComments()">发布</button>
+
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

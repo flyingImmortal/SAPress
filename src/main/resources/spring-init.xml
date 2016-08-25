@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+
+	<bean id="optionInit" class="cn.sxfei.app.modules.sapress.services.base.OptionsInitService"></bean>
+ 	<bean id="userInit" class="cn.sxfei.app.modules.sapress.services.base.UserInitService"></bean>
+ 	<bean id="menuInit" class="cn.sxfei.app.modules.sapress.services.admin.MenuInitService"></bean>
+	<bean id="termsInit" class="cn.sxfei.app.modules.sapress.services.admin.TermsInitService"></bean>
+	
+	<util:list id="_applicationInitList">
+        <ref bean="optionInit"></ref>
+        <ref bean="userInit"></ref>
+        <ref bean="menuInit"></ref>
+        <ref bean="termsInit"></ref>
+    </util:list>
+
+</beans>  

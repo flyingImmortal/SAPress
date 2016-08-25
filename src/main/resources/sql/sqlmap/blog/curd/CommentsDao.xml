@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sxfei.app.modules.sapress.services.base.dao.ICommentsDAO" >
+  <resultMap id="BaseResultMap" type="cn.sxfei.app.modules.sapress.interfaces.base.entity.Comments" >
+    <id column="comment_ID" property="commentId" jdbcType="BIGINT" />
+    <result column="comment_post_ID" property="commentPostId" jdbcType="BIGINT" />
+    <result column="comment_author" property="commentAuthor" jdbcType="VARCHAR" />
+    <result column="comment_author_email" property="commentAuthorEmail" jdbcType="VARCHAR" />
+    <result column="comment_author_url" property="commentAuthorUrl" jdbcType="VARCHAR" />
+    <result column="comment_author_IP" property="commentAuthorIp" jdbcType="VARCHAR" />
+    <result column="comment_date" property="commentDate" jdbcType="TIMESTAMP" />
+    <result column="comment_date_gmt" property="commentDateGmt" jdbcType="TIMESTAMP" />
+    <result column="comment_karma" property="commentKarma" jdbcType="INTEGER" />
+    <result column="comment_approved" property="commentApproved" jdbcType="VARCHAR" />
+    <result column="comment_agent" property="commentAgent" jdbcType="VARCHAR" />
+    <result column="comment_type" property="commentType" jdbcType="VARCHAR" />
+    <result column="comment_parent" property="commentParent" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="comment_content" property="commentContent" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    comment_ID, comment_post_ID, comment_author, comment_author_email, comment_author_url, 
+    comment_author_IP, comment_date, comment_date_gmt, comment_karma, comment_approved, 
+    comment_agent, comment_type, comment_parent, user_id,
+    comment_content
+  </sql>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from jbpress_comments
+    where comment_ID = #{commentId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.sxfei.app.modules.sapress.interfaces.base.entity.Comments" >
+    insert into jbpress_comments (comment_ID, comment_post_ID, comment_author, 
+      comment_author_email, comment_author_url, comment_author_IP, 
+      comment_date, comment_date_gmt, comment_karma, 
+      comment_approved, comment_agent, comment_type, 
+      comment_parent, user_id, comment_content
+      )
+    values (#{commentId,jdbcType=BIGINT}, #{commentPostId,jdbcType=BIGINT}, #{commentAuthor,jdbcType=VARCHAR}, 
+      #{commentAuthorEmail,jdbcType=VARCHAR}, #{commentAuthorUrl,jdbcType=VARCHAR}, #{commentAuthorIp,jdbcType=VARCHAR}, 
+      #{commentDate,jdbcType=TIMESTAMP}, #{commentDateGmt,jdbcType=TIMESTAMP}, #{commentKarma,jdbcType=INTEGER}, 
+      #{commentApproved,jdbcType=VARCHAR}, #{commentAgent,jdbcType=VARCHAR}, #{commentType,jdbcType=VARCHAR}, 
+      #{commentParent,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{commentContent,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.sxfei.app.modules.sapress.interfaces.base.entity.Comments" >
+    insert into jbpress_comments
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="commentId != null" >
+        comment_ID,
+      </if>
+      <if test="commentPostId != null" >
+        comment_post_ID,
+      </if>
+      <if test="commentAuthor != null" >
+        comment_author,
+      </if>
+      <if test="commentAuthorEmail != null" >
+        comment_author_email,
+      </if>
+      <if test="commentAuthorUrl != null" >
+        comment_author_url,
+      </if>
+      <if test="commentAuthorIp != null" >
+        comment_author_IP,
+      </if>
+      <if test="commentDate != null" >
+        comment_date,
+      </if>
+      <if test="commentDateGmt != null" >
+        comment_date_gmt,
+      </if>
+      <if test="commentKarma != null" >
+        comment_karma,
+      </if>
+      <if test="commentApproved != null" >
+        comment_approved,
+      </if>
+      <if test="commentAgent != null" >
+        comment_agent,
+      </if>
+      <if test="commentType != null" >
+        comment_type,
+      </if>
+      <if test="commentParent != null" >
+        comment_parent,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="commentContent != null" >
+        comment_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="commentId != null" >
+        #{commentId,jdbcType=BIGINT},
+      </if>
+      <if test="commentPostId != null" >
+        #{commentPostId,jdbcType=BIGINT},
+      </if>
+      <if test="commentAuthor != null" >
+        #{commentAuthor,jdbcType=VARCHAR},
+      </if>
+      <if test="commentAuthorEmail != null" >
+        #{commentAuthorEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="commentAuthorUrl != null" >
+        #{commentAuthorUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="commentAuthorIp != null" >
+        #{commentAuthorIp,jdbcType=VARCHAR},
+      </if>
+      <if test="commentDate != null" >
+        #{commentDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commentDateGmt != null" >
+        #{commentDateGmt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commentKarma != null" >
+        #{commentKarma,jdbcType=INTEGER},
+      </if>
+      <if test="commentApproved != null" >
+        #{commentApproved,jdbcType=VARCHAR},
+      </if>
+      <if test="commentAgent != null" >
+        #{commentAgent,jdbcType=VARCHAR},
+      </if>
+      <if test="commentType != null" >
+        #{commentType,jdbcType=VARCHAR},
+      </if>
+      <if test="commentParent != null" >
+        #{commentParent,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="commentContent != null" >
+        #{commentContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.sxfei.app.modules.sapress.interfaces.base.entity.Comments" >
+    update jbpress_comments
+    <set >
+      <if test="commentPostId != null" >
+        comment_post_ID = #{commentPostId,jdbcType=BIGINT},
+      </if>
+      <if test="commentAuthor != null" >
+        comment_author = #{commentAuthor,jdbcType=VARCHAR},
+      </if>
+      <if test="commentAuthorEmail != null" >
+        comment_author_email = #{commentAuthorEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="commentAuthorUrl != null" >
+        comment_author_url = #{commentAuthorUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="commentAuthorIp != null" >
+        comment_author_IP = #{commentAuthorIp,jdbcType=VARCHAR},
+      </if>
+      <if test="commentDate != null" >
+        comment_date = #{commentDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commentDateGmt != null" >
+        comment_date_gmt = #{commentDateGmt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commentKarma != null" >
+        comment_karma = #{commentKarma,jdbcType=INTEGER},
+      </if>
+      <if test="commentApproved != null" >
+        comment_approved = #{commentApproved,jdbcType=VARCHAR},
+      </if>
+      <if test="commentAgent != null" >
+        comment_agent = #{commentAgent,jdbcType=VARCHAR},
+      </if>
+      <if test="commentType != null" >
+        comment_type = #{commentType,jdbcType=VARCHAR},
+      </if>
+      <if test="commentParent != null" >
+        comment_parent = #{commentParent,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="commentContent != null" >
+        comment_content = #{commentContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where comment_ID = #{commentId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.sxfei.app.modules.sapress.interfaces.base.entity.Comments" >
+    update jbpress_comments
+    set comment_post_ID = #{commentPostId,jdbcType=BIGINT},
+      comment_author = #{commentAuthor,jdbcType=VARCHAR},
+      comment_author_email = #{commentAuthorEmail,jdbcType=VARCHAR},
+      comment_author_url = #{commentAuthorUrl,jdbcType=VARCHAR},
+      comment_author_IP = #{commentAuthorIp,jdbcType=VARCHAR},
+      comment_date = #{commentDate,jdbcType=TIMESTAMP},
+      comment_date_gmt = #{commentDateGmt,jdbcType=TIMESTAMP},
+      comment_karma = #{commentKarma,jdbcType=INTEGER},
+      comment_approved = #{commentApproved,jdbcType=VARCHAR},
+      comment_agent = #{commentAgent,jdbcType=VARCHAR},
+      comment_type = #{commentType,jdbcType=VARCHAR},
+      comment_parent = #{commentParent,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      comment_content = #{commentContent,jdbcType=LONGVARCHAR}
+    where comment_ID = #{commentId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.sxfei.app.modules.sapress.interfaces.base.entity.Comments" >
+    update jbpress_comments
+    set comment_post_ID = #{commentPostId,jdbcType=BIGINT},
+      comment_author = #{commentAuthor,jdbcType=VARCHAR},
+      comment_author_email = #{commentAuthorEmail,jdbcType=VARCHAR},
+      comment_author_url = #{commentAuthorUrl,jdbcType=VARCHAR},
+      comment_author_IP = #{commentAuthorIp,jdbcType=VARCHAR},
+      comment_date = #{commentDate,jdbcType=TIMESTAMP},
+      comment_date_gmt = #{commentDateGmt,jdbcType=TIMESTAMP},
+      comment_karma = #{commentKarma,jdbcType=INTEGER},
+      comment_approved = #{commentApproved,jdbcType=VARCHAR},
+      comment_agent = #{commentAgent,jdbcType=VARCHAR},
+      comment_type = #{commentType,jdbcType=VARCHAR},
+      comment_parent = #{commentParent,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT}
+    where comment_ID = #{commentId,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<!-- Standard xml based mvc config-->
+    <mvc:annotation-driven enable-matrix-variables="true"/>
+     
+	<!-- 启用spring mvc 注解 -->
+	<context:annotation-config />
+	<!-- 自动扫描且只扫描@Controller 这个扫描必须放在MVC启动文件，不然扫描不到controller -->
+	<context:component-scan
+		base-package="cn.sxfei.app.modules"
+		use-default-filters="false">
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+		<context:include-filter type="annotation"
+			expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+	</context:component-scan>
+
+	<!-- 对Controller进行aop拦截时候，该标签必须打开 ，不然拦截不到Controller中方法 -->
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+
+	
+
+	<mvc:annotation-driven>
+		<mvc:message-converters register-defaults="true">
+			<!-- 将StringHttpMessageConverter的默认编码设为UTF-8 对@RequestBody和@ResponseBody两个注解的处理-->
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<constructor-arg value="UTF-8" />
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
+	<!-- 让controller 返回json的配置 -->
+	<!-- 处理方法级别上的@RequestMapping注解 -->
+	<!-- 完成请求和注解POJO的映射 -->
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<util:list id="beanList">
+				<bean
+					class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
+				<bean
+					class="org.springframework.http.converter.StringHttpMessageConverter">
+					<property name="supportedMediaTypes">
+						<list>
+							<value>text/html;charset=UTF-8</value>
+						</list>
+					</property>
+				</bean>
+				<bean 
+				class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter"/>
+			</util:list>
+		</property>
+	</bean>
+	
+	<!-- 配置multipart resolver -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
+		p:defaultEncoding="utf-8">
+		<property name="maxUploadSize" value="40960000" />
+		<property name="resolveLazily" value="true" />
+	</bean>
+
+	<!-- 容器默认的DefaultServletHandler处理所有静态内容，使得静态资料不被拦截，能正常访问 -->
+	<mvc:default-servlet-handler />
+	<mvc:resources mapping="/static/**" location="/static/" />
+	
+	<!-- controller拦截器 -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**/admin/*" />
+			<bean class="cn.sxfei.app.modules.sapress.comm.AdminHandler" />
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/**/admin/*/*" />
+			<bean class="cn.sxfei.app.modules.sapress.comm.AdminHandler" />
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/**/admin" />
+			<bean class="cn.sxfei.app.modules.sapress.comm.AdminHandler" />
+		</mvc:interceptor>
+	</mvc:interceptors> 
+	<import resource="spring-mvc-freemarker.xml"/>
+</beans>

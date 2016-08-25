@@ -1,0 +1,18 @@
+<div class="panel panel-zan hot" ng-controller="HotArticlesController">
+    <div class="panel-heading">
+        <i class="fa fa-fire"></i> 最热文章
+    </div>
+    <!-- 大屏PC端、手机端 -->
+    <ul class="list-group list-group-flush visible-lg visible-xs">
+        <li ng-repeat="item in hotArticles" class="list-group-item"><a href= "" rel="bookmark" title="{{item.title}}" ng-click="blogOnClick(item.id)">{{item.title | cut:true:20:'...'}}</a><span class="badge">{{item.viewTotle}}</span></li>
+    </ul>
+    <!-- 小屏PC端 -->
+    <ul class="list-group list-group-flush visible-md">
+        <li ng-repeat="item in hotArticles" class="list-group-item"><a href= "" rel="bookmark" title="{{item.title}}" ng-click="blogOnClick(item.id)">{{item.title | cut:true:15:'...'}}</a><span class="badge">{{item.viewTotle}}</span></li>
+    </ul>
+    <!-- 平板端 -->
+    <ul class="list-group list-group-flush visible-sm">
+        <li ng-repeat="item in hotArticles" class="list-group-item"><a href= "" rel="bookmark" title="{{item.title}}" ng-click="blogOnClick(item.id)">{{item.title | cut:true:10:'...'}}</a><span class="badge">{{item.viewTotle}}</span></li>
+    </ul>
+</div>
+

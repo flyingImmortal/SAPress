@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sxfei.app.modules.sapress.services.base.dao.ITermsDAO">
+	<resultMap id="TermsResult"
+		type="cn.sxfei.app.modules.sapress.interfaces.base.entity.Terms">
+		<id column="term_id" property="termId" jdbcType="BIGINT" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="slug" property="slug" jdbcType="VARCHAR" />
+		<result column="term_group" property="termGroup" jdbcType="BIGINT" />
+	</resultMap>
+	<sql id="Terms_Column_List">
+		term_id, name, slug, term_group
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="TermsResult"
+		parameterType="cn.sxfei.app.core.base.dto.QueryDTO">
+		select
+		<include refid="Terms_Column_List" />
+		from ${tablePrefix}terms
+		where term_id = #{id,jdbcType=BIGINT}
+	</select>
+	<!-- 查询分类 -->
+	<select id="selectTermAndTaxonomy" resultType="Map"
+		parameterType="cn.sxfei.app.modules.sapress.interfaces.base.dto.PostQueryDTO">
+		SELECT
+		t.*, tt.*
+		FROM
+		${tablePrefix}terms AS t
+		INNER JOIN 
+		${tablePrefix}term_taxonomy AS tt ON t.term_id = tt.term_id
+		WHERE  
+		<if test="typeList != null and typeList.size() > 0">
+             tt.taxonomy IN
+             <foreach collection="typeList" item="item" index="index" separator="," open="(" close=")">
+		        #{item, jdbcType=VARCHAR}
+		     </foreach>
+        </if>
+		order by t.term_id 
+        <bind name="offset" value="pageSize * pageNo" />
+        LIMIT #{offset, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER}
+	</select>
+	<!-- 后台文章管理使用，作为查询条件 -->
+	<select id="selectTermByPostId" resultType="Map"
+		parameterType="cn.sxfei.app.core.base.dto.QueryDTO">
+		SELECT
+		t.*, tt.*, tr.object_id
+		FROM
+		${tablePrefix}terms AS t
+		INNER JOIN
+		${tablePrefix}term_taxonomy AS tt ON tt.term_id = t.term_id
+		INNER JOIN
+		${tablePrefix}term_relationships AS tr ON
+		tr.term_taxonomy_id =
+		tt.term_taxonomy_id
+		WHERE
+		tt.taxonomy IN (
+		'category',
+		'post_tag',
+		'post_format'
+		)
+		<if test="idList != null and idList.size() > 0">
+			AND tr.object_id IN
+			<foreach collection="idList" item="item" index="index"
+				separator="," open="(" close=")">
+				#{item}
+			</foreach>
+		</if>
+		ORDER BY
+		t. NAME ASC
+	</select>
+	<!-- 查询所有菜单 -->
+	<select id="selectAllMenu" resultType="Long"
+		parameterType="cn.sxfei.app.core.base.dto.QueryDTO">
+
+		SELECT
+		tr.object_id
+		FROM
+		${tablePrefix}term_relationships AS tr
+		INNER
+		JOIN ${tablePrefix}term_taxonomy AS tt ON tr.term_taxonomy_id =
+		tt.term_taxonomy_id
+		WHERE
+		tt.taxonomy IN ('nav_menu')
+		AND tt.term_id IN
+		('2')
+		ORDER BY
+		tr.object_id ASC
+	</select>
+	
+</mapper>

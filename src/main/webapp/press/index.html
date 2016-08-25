@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!--[if IE 7]>
+<html class="ie ie7" lang="zh-CN">
+<![endif]-->
+<!--[if IE 8]>
+<html class="ie ie8" lang="zh-CN">
+<![endif]-->
+<!--[if !(IE 7) | !(IE 8)  ]><!-->
+<html lang="zh-CN" ng-app="SABlog">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+
+    <!-- 设置标题 -->
+    <title>
+        移动开发参考书 | Android开发技术博客-去逛逛吧（blog.goggb.com）              </title>
+
+    <!-- 设置描述性标签和关键词标签 -->
+
+    <meta content="专业收藏android应用开发技术文章,所有文字图片资料均来源于网络，如涉嫌侵权，请联系本站QQ2244185653,欢迎加入QQ群113620119。" name="description"/>
+    <meta content=" android,android开发,android开发教程,android开发入,android学习,android入门,android游戏开发,android源码研究,android讨论                                                                                                                                      " name="keywords"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel='stylesheet' id='embed-default'  href='themes/embed.default.css'/>
+    <link rel='stylesheet' id='zanblog-style-css' href='themes/zanblog2.0.7/style.css?ver=2.0.7' type='text/css' media='all' />
+    <link rel='stylesheet' id='bootstrap-style-css' href='themes/zanblog2.0.7/ui/css/bootstrap.css?ver=3.0.0' type='text/css' media='all' />
+    <link rel='stylesheet' id='fontawesome-style-css' href='themes/zanblog2.0.7/ui/font-awesome/css/font-awesome.min.css?ver=4.0.1' type='text/css' media='all' />
+    <link rel='stylesheet' id='icheck-style-css' href='themes/zanblog2.0.7/ui/css/flat/red.css?ver=3.8.13' type='text/css' media='all' />
+    <link rel='stylesheet' id='custom-style-css' href='themes/zanblog2.0.7/ui/css/custom.css?ver=2.0.7' type='text/css' media='all' />
+
+</head>
+<body class="home blog nav-fixed">
+<header id="zan-header" class="navbar navbar-inverse bs-docs-nav navbar-fixed-top" ng-include="'views/default/blog/header.html'"></header>
+<section id="zan-bodyer">
+    <div class="container">
+        <section class="row">
+<div ui-view=""></div>
+            <div ng-include="'views/default/blog/sidebar.html'"></div>
+
+        </section>
+    </div>
+</section>
+<div ng-include="'views/default/blog/footer.html'"></div>
+<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+<script src="scripts/all.min.js"></script>
+</body>
+</html>

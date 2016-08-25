@@ -1,0 +1,19 @@
+<div class="panel panel-zan" ng-controller="CommentsController">
+    <div class="panel-heading">
+        <i class="fa fa-comments"></i> 最新评论
+    </div>
+    <!-- 大屏PC端 -->
+    <ul class="list-group list-group-flush visible-lg">
+        <li class="list-group-item" ng-repeat="item in articles">
+            <img alt='' src='' class='avatar avatar-40 photo avatar-default' height='40' width='40' />
+            <span class="comment-log">{{item.commentContent}}</span>
+        </li>
+    </ul>
+    <!-- 小屏PC端 -->
+    <ul class="list-group list-group-flush visible-md">
+        <li class="list-group-item">
+            <img alt='' src='' class='avatar avatar-35 photo' height='35' width='35' />
+            <span class="comment-log">{{item.commentContent}}</span></li>
+
+    </ul>
+</div>
